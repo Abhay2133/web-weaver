@@ -1,0 +1,12 @@
+{
+  "name": "web-weaver",
+  "version": "1.0.0",
+  "description": "**A modern no-code full stack website builder**",
+  "main": "index.js",
+  "scripts": {
+    "start:api": "cd webweaver-api && npm run start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
