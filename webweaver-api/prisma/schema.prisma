@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// For SQLite (development)
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// For PostgreSQL (production)
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
+// Example model - you can add your own models here
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Session tracking for anonymous users
+model Session {
+  id        String     @id @default(uuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  expiresAt DateTime?
+  pageViews PageView[]
+}
+
+// Page view tracking with unique sessions
+model PageView {
+  id        Int      @id @default(autoincrement())
+  url       String
+  sessionId String
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  viewedAt  DateTime @default(now())
+
+  @@unique([url, sessionId])
+  @@index([url])
+}
